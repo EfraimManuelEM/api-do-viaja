@@ -15,6 +15,8 @@ export default class Assento extends AssentoSchema {
     const source = this.assento
       ? this.assento.split(' ')
       : String(this.viagemId).split(' ')
+      ? String(this.viagemId).split(' ')
+      : this.status
 
     const [first, last] = source
 

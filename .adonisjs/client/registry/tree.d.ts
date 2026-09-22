@@ -7,7 +7,8 @@ export interface ApiDefinition {
       store: typeof routes['auth.new_account.store']
     }
     accessToken: {
-      store: typeof routes['auth.access_token.store']
+      requestCode: typeof routes['auth.access_token.request_code']
+      verifyCode: typeof routes['auth.access_token.verify_code']
       me: typeof routes['auth.access_token.me']
     }
   }
@@ -21,6 +22,17 @@ export interface ApiDefinition {
     show: typeof routes['new_account.show']
     update: typeof routes['new_account.update']
     destroy: typeof routes['new_account.destroy']
+  }
+  accesses: {
+    store: typeof routes['accesses.store']
+    me: typeof routes['accesses.me']
+  }
+  adms: {
+    store: typeof routes['adms.store']
+    index: typeof routes['adms.index']
+    show: typeof routes['adms.show']
+    update: typeof routes['adms.update']
+    destroy: typeof routes['adms.destroy']
   }
   viagems: {
     index: typeof routes['viagems.index']
@@ -36,8 +48,15 @@ export interface ApiDefinition {
     destroy: typeof routes['assentos.destroy']
     update: typeof routes['assentos.update']
   }
+  leitors: {
+    index: typeof routes['leitors.index']
+    store: typeof routes['leitors.store']
+    update: typeof routes['leitors.update']
+    destroy: typeof routes['leitors.destroy']
+  }
   pagamentos: {
     index: typeof routes['pagamentos.index']
+    meusPagamentos: typeof routes['pagamentos.meus_pagamentos']
     show: typeof routes['pagamentos.show']
     store: typeof routes['pagamentos.store']
     update: typeof routes['pagamentos.update']

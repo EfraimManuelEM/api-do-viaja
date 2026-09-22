@@ -21,7 +21,8 @@ router
     router
       .group(() => {
         router.post('signup', [controllers.NewAccount, 'store'])
-        router.post('login', [controllers.AccessToken, 'store'])
+        router.post('code', [controllers.AccessToken, 'requestCode'])
+        router.post('veri', [controllers.AccessToken, 'verifyCode'])
         router.get('me', [controllers.AccessToken, 'me']).use(middleware.auth())
       })
       .prefix('auth')
@@ -43,6 +44,17 @@ router
           router.delete('/user', [controllers.NewAccount, 'destroy'])
       })
 
+      router 
+        .group(() => {
+          router.post('/ad', [controllers.Accesses, 'store'])
+          router.post('/adm', [controllers.Adms, 'store'])
+          router.get('/adm', [controllers.Adms, 'index'])
+          router.get('/adm/:id', [controllers.Adms, 'show'])
+          router.put('/adm/:id', [controllers.Adms, 'update'])
+          router.delete('/adm/:id', [controllers.Adms, 'destroy'])
+          router.get('mee', [controllers.Accesses, 'me']).use(middleware.auth())
+        })
+
       router
         .group(() => {
           router.get('/viagem', [controllers.Viagems, 'index'])
@@ -60,17 +72,26 @@ router
           router.delete('/assento/:id', [controllers.Assentos, 'destroy'])
           router.put('/assento/:id', [controllers.Assentos, 'update'])
         })
+ 
+        router 
+          .group(() => {
+            router.get('/ler', [controllers.Leitors, 'index'])
+            router.post('/ler', [controllers.Leitors, 'store'])
+            router.put('/ler/:id', [controllers.Leitors, 'update'])
+            router.delete('/ler/:id', [controllers.Leitors, 'destroy'])
+          })
 
-router
-  .group(() => {
-    router.get('/pagamento', [controllers.Pagamentos, 'index'])
-    router.get('/pagamento/:id', [controllers.Pagamentos, 'show'])
-    router.post('/pagamento', [controllers.Pagamentos, 'store'])
-    router.put('/pagamento/:id', [controllers.Pagamentos, 'update'])
-    router.delete('/pagamento/:id', [controllers.Pagamentos, 'destroy'])
-  }).use(middleware.auth({ guards: ['api'] }))
+      router
+        .group(() => {
+          router.get('/pagamento', [controllers.Pagamentos, 'index'])
+          router.get('/paga', [controllers.Pagamentos, 'meusPagamentos']) 
+          router.get('/pagamento/:id', [controllers.Pagamentos, 'show'])
+          router.post('/pagamento', [controllers.Pagamentos, 'store'])
+          router.put('/pagamento/:id', [controllers.Pagamentos, 'update'])
+          router.delete('/pagamento/:id', [controllers.Pagamentos, 'destroy'])
+        })
 
     })
 
 
-  .prefix('/api/v1')
+  .prefix('/api/v1') 

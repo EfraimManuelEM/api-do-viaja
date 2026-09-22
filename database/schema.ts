@@ -7,8 +7,56 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class AccessSchema extends BaseModel {
+  static $columns = ['id', 'tokenableId', 'type', 'name', 'hash', 'abilities', 'createdAt', 'updatedAt', 'lastUsedAt', 'expiresAt'] as const
+  $columns = AccessSchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare tokenableId: number
+  @column()
+  declare type: string
+  @column()
+  declare name: string | null
+  @column()
+  declare hash: string
+  @column()
+  declare abilities: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column.dateTime()
+  declare lastUsedAt: DateTime | null
+  @column.dateTime()
+  declare expiresAt: DateTime | null
+}
+
+export class AdmSchema extends BaseModel {
+  static $columns = ['id', 'fullName', 'email', 'password', 'telefone', 'bi', 'role', 'createdAt', 'updatedAt'] as const
+  $columns = AdmSchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare fullName: string | null
+  @column()
+  declare email: string
+  @column({ serializeAs: null })
+  declare password: string
+  @column()
+  declare telefone: string
+  @column()
+  declare bi: string
+  @column()
+  declare role: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
 export class AssentoSchema extends BaseModel {
-  static $columns = ['id', 'assento', 'viagemId'] as const
+  static $columns = ['id', 'assento', 'viagemId', 'status'] as const
   $columns = AssentoSchema.$columns
   @column({ isPrimary: true })
   declare id: number
@@ -16,6 +64,8 @@ export class AssentoSchema extends BaseModel {
   declare assento: string
   @column()
   declare viagemId: number | null
+  @column()
+  declare status: string
 }
 
 export class AuthAccessTokenSchema extends BaseModel {
@@ -43,6 +93,15 @@ export class AuthAccessTokenSchema extends BaseModel {
   declare expiresAt: DateTime | null
 }
 
+export class LeitorSchema extends BaseModel {
+  static $columns = ['id', 'pagamentoId'] as const
+  $columns = LeitorSchema.$columns
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare pagamentoId: number | null
+}
+
 export class PagamentoSchema extends BaseModel {
   static $columns = ['id', 'metodo', 'codigo', 'qrcode', 'assentoId', 'userId', 'createdAt', 'updatedAt'] as const
   $columns = PagamentoSchema.$columns
@@ -65,7 +124,7 @@ export class PagamentoSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['id', 'fullName', 'email', 'password', 'telefone', 'createdAt', 'updatedAt'] as const
+  static $columns = ['id', 'fullName', 'email', 'telefone', 'bi', 'verificationCode', 'verificationCodeExpiresAt', 'createdAt', 'updatedAt'] as const
   $columns = UserSchema.$columns
   @column({ isPrimary: true })
   declare id: number
@@ -73,10 +132,14 @@ export class UserSchema extends BaseModel {
   declare fullName: string | null
   @column()
   declare email: string
-  @column({ serializeAs: null })
-  declare password: string
   @column()
   declare telefone: string
+  @column()
+  declare bi: string
+  @column()
+  declare verificationCode: string | null
+  @column.dateTime()
+  declare verificationCodeExpiresAt: DateTime | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column.dateTime({ autoCreate: true, autoUpdate: true })
@@ -84,7 +147,7 @@ export class UserSchema extends BaseModel {
 }
 
 export class ViagemSchema extends BaseModel {
-  static $columns = ['id', 'origem', 'destino', 'data', 'preco', 'createdAt', 'updatedAt'] as const
+  static $columns = ['id', 'origem', 'destino', 'data', 'preco', 'tipo', 'hora', 'createdAt', 'updatedAt'] as const
   $columns = ViagemSchema.$columns
   @column({ isPrimary: true })
   declare id: number
@@ -96,6 +159,10 @@ export class ViagemSchema extends BaseModel {
   declare data: string
   @column()
   declare preco: number
+  @column()
+  declare tipo: string
+  @column()
+  declare hora: string
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column.dateTime({ autoCreate: true, autoUpdate: true })

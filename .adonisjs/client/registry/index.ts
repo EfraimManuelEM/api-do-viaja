@@ -12,11 +12,17 @@ const routes = {
     tokens: [{"old":"/api/v1/auth/signup","type":0,"val":"api","end":""},{"old":"/api/v1/auth/signup","type":0,"val":"v1","end":""},{"old":"/api/v1/auth/signup","type":0,"val":"auth","end":""},{"old":"/api/v1/auth/signup","type":0,"val":"signup","end":""}],
     types: placeholder as Registry['auth.new_account.store']['types'],
   },
-  'auth.access_token.store': {
+  'auth.access_token.request_code': {
     methods: ["POST"],
-    pattern: '/api/v1/auth/login',
-    tokens: [{"old":"/api/v1/auth/login","type":0,"val":"api","end":""},{"old":"/api/v1/auth/login","type":0,"val":"v1","end":""},{"old":"/api/v1/auth/login","type":0,"val":"auth","end":""},{"old":"/api/v1/auth/login","type":0,"val":"login","end":""}],
-    types: placeholder as Registry['auth.access_token.store']['types'],
+    pattern: '/api/v1/auth/code',
+    tokens: [{"old":"/api/v1/auth/code","type":0,"val":"api","end":""},{"old":"/api/v1/auth/code","type":0,"val":"v1","end":""},{"old":"/api/v1/auth/code","type":0,"val":"auth","end":""},{"old":"/api/v1/auth/code","type":0,"val":"code","end":""}],
+    types: placeholder as Registry['auth.access_token.request_code']['types'],
+  },
+  'auth.access_token.verify_code': {
+    methods: ["POST"],
+    pattern: '/api/v1/auth/veri',
+    tokens: [{"old":"/api/v1/auth/veri","type":0,"val":"api","end":""},{"old":"/api/v1/auth/veri","type":0,"val":"v1","end":""},{"old":"/api/v1/auth/veri","type":0,"val":"auth","end":""},{"old":"/api/v1/auth/veri","type":0,"val":"veri","end":""}],
+    types: placeholder as Registry['auth.access_token.verify_code']['types'],
   },
   'auth.access_token.me': {
     methods: ["GET","HEAD"],
@@ -53,6 +59,48 @@ const routes = {
     pattern: '/api/v1/user',
     tokens: [{"old":"/api/v1/user","type":0,"val":"api","end":""},{"old":"/api/v1/user","type":0,"val":"v1","end":""},{"old":"/api/v1/user","type":0,"val":"user","end":""}],
     types: placeholder as Registry['new_account.destroy']['types'],
+  },
+  'accesses.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/ad',
+    tokens: [{"old":"/api/v1/ad","type":0,"val":"api","end":""},{"old":"/api/v1/ad","type":0,"val":"v1","end":""},{"old":"/api/v1/ad","type":0,"val":"ad","end":""}],
+    types: placeholder as Registry['accesses.store']['types'],
+  },
+  'adms.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/adm',
+    tokens: [{"old":"/api/v1/adm","type":0,"val":"api","end":""},{"old":"/api/v1/adm","type":0,"val":"v1","end":""},{"old":"/api/v1/adm","type":0,"val":"adm","end":""}],
+    types: placeholder as Registry['adms.store']['types'],
+  },
+  'adms.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/adm',
+    tokens: [{"old":"/api/v1/adm","type":0,"val":"api","end":""},{"old":"/api/v1/adm","type":0,"val":"v1","end":""},{"old":"/api/v1/adm","type":0,"val":"adm","end":""}],
+    types: placeholder as Registry['adms.index']['types'],
+  },
+  'adms.show': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/adm/:id',
+    tokens: [{"old":"/api/v1/adm/:id","type":0,"val":"api","end":""},{"old":"/api/v1/adm/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/adm/:id","type":0,"val":"adm","end":""},{"old":"/api/v1/adm/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['adms.show']['types'],
+  },
+  'adms.update': {
+    methods: ["PUT"],
+    pattern: '/api/v1/adm/:id',
+    tokens: [{"old":"/api/v1/adm/:id","type":0,"val":"api","end":""},{"old":"/api/v1/adm/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/adm/:id","type":0,"val":"adm","end":""},{"old":"/api/v1/adm/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['adms.update']['types'],
+  },
+  'adms.destroy': {
+    methods: ["DELETE"],
+    pattern: '/api/v1/adm/:id',
+    tokens: [{"old":"/api/v1/adm/:id","type":0,"val":"api","end":""},{"old":"/api/v1/adm/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/adm/:id","type":0,"val":"adm","end":""},{"old":"/api/v1/adm/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['adms.destroy']['types'],
+  },
+  'accesses.me': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/mee',
+    tokens: [{"old":"/api/v1/mee","type":0,"val":"api","end":""},{"old":"/api/v1/mee","type":0,"val":"v1","end":""},{"old":"/api/v1/mee","type":0,"val":"mee","end":""}],
+    types: placeholder as Registry['accesses.me']['types'],
   },
   'viagems.index': {
     methods: ["GET","HEAD"],
@@ -114,11 +162,41 @@ const routes = {
     tokens: [{"old":"/api/v1/assento/:id","type":0,"val":"api","end":""},{"old":"/api/v1/assento/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/assento/:id","type":0,"val":"assento","end":""},{"old":"/api/v1/assento/:id","type":1,"val":"id","end":""}],
     types: placeholder as Registry['assentos.update']['types'],
   },
+  'leitors.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/ler',
+    tokens: [{"old":"/api/v1/ler","type":0,"val":"api","end":""},{"old":"/api/v1/ler","type":0,"val":"v1","end":""},{"old":"/api/v1/ler","type":0,"val":"ler","end":""}],
+    types: placeholder as Registry['leitors.index']['types'],
+  },
+  'leitors.store': {
+    methods: ["POST"],
+    pattern: '/api/v1/ler',
+    tokens: [{"old":"/api/v1/ler","type":0,"val":"api","end":""},{"old":"/api/v1/ler","type":0,"val":"v1","end":""},{"old":"/api/v1/ler","type":0,"val":"ler","end":""}],
+    types: placeholder as Registry['leitors.store']['types'],
+  },
+  'leitors.update': {
+    methods: ["PUT"],
+    pattern: '/api/v1/ler/:id',
+    tokens: [{"old":"/api/v1/ler/:id","type":0,"val":"api","end":""},{"old":"/api/v1/ler/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/ler/:id","type":0,"val":"ler","end":""},{"old":"/api/v1/ler/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['leitors.update']['types'],
+  },
+  'leitors.destroy': {
+    methods: ["DELETE"],
+    pattern: '/api/v1/ler/:id',
+    tokens: [{"old":"/api/v1/ler/:id","type":0,"val":"api","end":""},{"old":"/api/v1/ler/:id","type":0,"val":"v1","end":""},{"old":"/api/v1/ler/:id","type":0,"val":"ler","end":""},{"old":"/api/v1/ler/:id","type":1,"val":"id","end":""}],
+    types: placeholder as Registry['leitors.destroy']['types'],
+  },
   'pagamentos.index': {
     methods: ["GET","HEAD"],
     pattern: '/api/v1/pagamento',
     tokens: [{"old":"/api/v1/pagamento","type":0,"val":"api","end":""},{"old":"/api/v1/pagamento","type":0,"val":"v1","end":""},{"old":"/api/v1/pagamento","type":0,"val":"pagamento","end":""}],
     types: placeholder as Registry['pagamentos.index']['types'],
+  },
+  'pagamentos.meus_pagamentos': {
+    methods: ["GET","HEAD"],
+    pattern: '/api/v1/paga',
+    tokens: [{"old":"/api/v1/paga","type":0,"val":"api","end":""},{"old":"/api/v1/paga","type":0,"val":"v1","end":""},{"old":"/api/v1/paga","type":0,"val":"paga","end":""}],
+    types: placeholder as Registry['pagamentos.meus_pagamentos']['types'],
   },
   'pagamentos.show': {
     methods: ["GET","HEAD"],

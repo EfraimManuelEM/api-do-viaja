@@ -10,6 +10,10 @@ export default class Viagem extends ViagemSchema {
         : this.data
         ? this.data.split('')
         : this.preco
+        ? this.preco
+        : this.tipo
+        ? this.tipo
+        : this.hora
         const [first, last] = source.toLocaleString(' ')
 
         if (first && last) {

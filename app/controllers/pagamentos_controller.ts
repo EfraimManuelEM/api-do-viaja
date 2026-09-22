@@ -6,23 +6,31 @@ import { randomUUID } from 'node:crypto'
 
 export default class PagamentosController {
 
-  // LISTAR PAGAMENTOS DO USUÁRIO
-  async index({ auth }: HttpContext) {
+  // LISTAR TODOS OS PAGAMENTOS (ADMIN)
+  async index({}: HttpContext) {
+    return await Pagamento
+      .query()
+      .preload('user')
+      .preload('assento', (q) => {
+        q.preload('viagem')
+      })
+  }
+
+  // LISTAR PAGAMENTOS DO USUÁRIO LOGADO
+  async meusPagamentos({ auth }: HttpContext) {
     const user = await auth.authenticate()
 
-    const pagamentos = await Pagamento
+    return await Pagamento
       .query()
       .where('user_id', user.id)
-      .preload('assento', (assentoQuery) => {
-        assentoQuery.preload('viagem')
+      .preload('user')
+      .preload('assento', (q) => {
+        q.preload('viagem')
       })
-
-    return pagamentos
   }
 
   // CRIAR PAGAMENTO
   async store({ request, response, auth }: HttpContext) {
-    // ✅ Autenticação adicionada
     const user = await auth.authenticate()
 
     const data = request.only([
@@ -30,21 +38,13 @@ export default class PagamentosController {
       'assentoId',
     ])
 
-    // Validar dados
     if (!data.assentoId) {
       return response.badRequest({
         message: 'assentoId não enviado'
       })
     }
 
-    // Garantir número
-    const assentoId = Number(data.assentoId)
-
-    // Procurar assento
-    const assento = await Assento
-      .query()
-      .where('id', assentoId)
-      .first()
+    const assento = await Assento.find(data.assentoId)
 
     if (!assento) {
       return response.badRequest({
@@ -52,59 +52,52 @@ export default class PagamentosController {
       })
     }
 
-    // Verificar se já existe pagamento para esse assento
-    const assentoOcupado = await Pagamento
+    const reservado = await Pagamento
       .query()
       .where('assento_id', assento.id)
       .first()
 
-    if (assentoOcupado) {
+    if (reservado) {
       return response.badRequest({
         message: 'Este assento já foi reservado'
       })
     }
 
-    // ✅ Geração de código mais segura (sem colisões)
     const codigo = 'PAY163-' + randomUUID().split('-')[0].toUpperCase()
 
-    // Gerar QR code
     const qrCode = await QRCode.toDataURL(codigo)
 
-    // ✅ userId incluído para que index() encontre os registros
     const pagamento = await Pagamento.create({
       metodo: data.metodo,
       assentoId: assento.id,
-      codigo: codigo,
-      qrcode: qrCode,
       userId: user.id,
+      codigo,
+      qrcode: qrCode,
     })
 
-    // Recarregar com preload para retornar objeto completo
-    const pagamentoCarregado = await Pagamento
+    return await Pagamento
       .query()
       .where('id', pagamento.id)
-      .preload('assento', (assentoQuery) => {
-        assentoQuery.preload('viagem')
+      .preload('user')
+      .preload('assento', (q) => {
+        q.preload('viagem')
       })
       .first()
-
-    return response.status(201).json(pagamentoCarregado ?? pagamento)
   }
 
-  // MOSTRAR PAGAMENTO
+  // MOSTRAR UM PAGAMENTO
   async show({ params }: HttpContext) {
-    const pagamento = await Pagamento
+    return await Pagamento
       .query()
       .where('id', params.id)
-      .preload('assento', (assentoQuery) => {
-        assentoQuery.preload('viagem')
+      .preload('user')
+      .preload('assento', (q) => {
+        q.preload('viagem')
       })
       .firstOrFail()
-
-    return pagamento
   }
 
-  // ✅ ATUALIZAR PAGAMENTO — corrigido: nome em inglês + async adicionado
+  // ATUALIZAR
   async update({ params, request }: HttpContext) {
     const pagamento = await Pagamento.findOrFail(params.id)
 
@@ -114,30 +107,26 @@ export default class PagamentosController {
       'assentoId'
     ])
 
-    pagamento.merge({
-      metodo: data.metodo,
-      codigo: data.codigo,
-      assentoId: data.assentoId
-    })
+    pagamento.merge(data)
 
     await pagamento.save()
 
-    // Recarregar com preload para retornar completo
-    const atualizado = await Pagamento
+    return await Pagamento
       .query()
       .where('id', pagamento.id)
-      .preload('assento', (q) => q.preload('viagem'))
+      .preload('user')
+      .preload('assento', (q) => {
+        q.preload('viagem')
+      })
       .first()
-
-    return atualizado ?? pagamento
   }
 
-  // DELETAR PAGAMENTO
+  // DELETAR
   async destroy({ params, response }: HttpContext) {
     const pagamento = await Pagamento.findOrFail(params.id)
 
     await pagamento.delete()
 
-    return response.status(204)
+    return response.noContent()
   }
 }

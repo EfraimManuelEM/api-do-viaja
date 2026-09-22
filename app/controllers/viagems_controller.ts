@@ -8,7 +8,7 @@ export default class ViagemsController {
     }
 
     async store({ request, response}: HttpContext) {
-        const data = request.only(['origem', 'destino', 'data', 'preco'])
+        const data = request.only(['origem', 'destino', 'data', 'hora', 'preco', 'tipo'])
         const viagem = await Viagem.create(data)
         response.status(201)
         return viagem
@@ -21,7 +21,7 @@ export default class ViagemsController {
 
     async update({ params, request }: HttpContext) {
         const viagem = await Viagem.findOrFail(params.id)
-        const data = request.only(['origem', 'destino', 'data', 'preco'])
+        const data = request.only(['origem', 'destino', 'data', 'hora', 'preco', 'tipo'])
         viagem.merge(data)
         await viagem.save()
         return viagem

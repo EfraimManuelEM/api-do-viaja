@@ -9,6 +9,8 @@ export default class ViagemTransformer extends BaseTransformer<Viagem> {
       'destino',
       'preco',
       'data',
+      'hora',
+      'tipo',
       'createdAt',
       'updatedAt',
     ])

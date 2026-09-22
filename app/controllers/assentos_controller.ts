@@ -11,7 +11,7 @@ export default class AssentosController {
   }
 
   async store({ request, response }: HttpContext) {
-    const { assento, viagemId } = request.only(['assento', 'viagemId'])
+    const { assento, viagemId, status } = request.only(['assento', 'viagemId', 'status'])
 
     console.log(request.all())
 
@@ -19,6 +19,7 @@ export default class AssentosController {
     const ocupado = await Assento.query()
       .where('viagem_id', viagemId)
       .andWhere('assento', assento)
+      .andWhere('status', status)
       .first()
 
     if (ocupado) {
@@ -28,7 +29,7 @@ export default class AssentosController {
     }
 
     // Criar assento se livre
-    const novoAssento = await Assento.create({ assento, viagemId })
+    const novoAssento = await Assento.create({ assento, viagemId, status })
     return response.status(201).json(novoAssento)
   }
 

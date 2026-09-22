@@ -1,4 +1,4 @@
-import { UserSchema } from '#database/schema'
+import { AdmSchema } from '#database/schema'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
@@ -9,10 +9,12 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   passwordColumnName: 'password',
 })
 
-export default class User extends compose(UserSchema, AuthFinder) {
-  
-  // 🔐 ATIVA API TOKENS
-  static accessTokens = DbAccessTokensProvider.forModel(User)
+
+export default class Adm extends compose(AdmSchema, AuthFinder) {
+    
+  static accesses = DbAccessTokensProvider.forModel(Adm, {
+    table: 'accesses', // <-- aponta para a tua tabela
+  })
 
   get initials() {
     const source = 
@@ -23,6 +25,8 @@ export default class User extends compose(UserSchema, AuthFinder) {
         : this.telefone
         ? this.telefone
         : this.bi
+        ? this.bi
+        : this.role
 
     const [first, last] = source.split(' ')
 

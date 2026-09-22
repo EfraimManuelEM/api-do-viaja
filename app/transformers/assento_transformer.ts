@@ -7,6 +7,7 @@ export default class AssentoTransformer extends BaseTransformer<Assento> {
       'id',
       'assento',
       'viagemId',
+      'status'
     ])
   }
-}
+} 

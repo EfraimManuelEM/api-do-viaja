@@ -18,15 +18,26 @@ export interface Registry {
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['store']>>>
     }
   }
-  'auth.access_token.store': {
+  'auth.access_token.request_code': {
     methods: ["POST"]
-    pattern: '/api/v1/auth/login'
+    pattern: '/api/v1/auth/code'
     types: {
-      body: ExtractBody<InferInput<(typeof import('#validators/user').loginValidator)>>
+      body: ExtractBody<InferInput<(typeof import('#validators/user').requestCodeValidator)>>
       paramsTuple: []
       params: {}
-      query: ExtractQuery<InferInput<(typeof import('#validators/user').loginValidator)>>
-      response: ExtractResponse<Awaited<ReturnType<import('#controllers/access_token_controller').default['store']>>>
+      query: ExtractQuery<InferInput<(typeof import('#validators/user').requestCodeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/access_token_controller').default['requestCode']>>>
+    }
+  }
+  'auth.access_token.verify_code': {
+    methods: ["POST"]
+    pattern: '/api/v1/auth/veri'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/user').verifyCodeValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/user').verifyCodeValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/access_token_controller').default['verifyCode']>>>
     }
   }
   'auth.access_token.me': {
@@ -93,6 +104,83 @@ export interface Registry {
       params: {}
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/new_account_controller').default['destroy']>>>
+    }
+  }
+  'accesses.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/ad'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/adm').loginValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/adm').loginValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/accesses_controller').default['store']>>>
+    }
+  }
+  'adms.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/adm'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/adm').signupValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/adm').signupValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/adms_controller').default['store']>>>
+    }
+  }
+  'adms.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/adm'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/adms_controller').default['index']>>>
+    }
+  }
+  'adms.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/adm/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/adms_controller').default['show']>>>
+    }
+  }
+  'adms.update': {
+    methods: ["PUT"]
+    pattern: '/api/v1/adm/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/adms_controller').default['update']>>>
+    }
+  }
+  'adms.destroy': {
+    methods: ["DELETE"]
+    pattern: '/api/v1/adm/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/adms_controller').default['destroy']>>>
+    }
+  }
+  'accesses.me': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/mee'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/accesses_controller').default['me']>>>
     }
   }
   'viagems.index': {
@@ -205,6 +293,50 @@ export interface Registry {
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/assentos_controller').default['update']>>>
     }
   }
+  'leitors.index': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/ler'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/leitors_controller').default['index']>>>
+    }
+  }
+  'leitors.store': {
+    methods: ["POST"]
+    pattern: '/api/v1/ler'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/leitors_controller').default['store']>>>
+    }
+  }
+  'leitors.update': {
+    methods: ["PUT"]
+    pattern: '/api/v1/ler/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/leitors_controller').default['update']>>>
+    }
+  }
+  'leitors.destroy': {
+    methods: ["DELETE"]
+    pattern: '/api/v1/ler/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/leitors_controller').default['destroy']>>>
+    }
+  }
   'pagamentos.index': {
     methods: ["GET","HEAD"]
     pattern: '/api/v1/pagamento'
@@ -214,6 +346,17 @@ export interface Registry {
       params: {}
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/pagamentos_controller').default['index']>>>
+    }
+  }
+  'pagamentos.meus_pagamentos': {
+    methods: ["GET","HEAD"]
+    pattern: '/api/v1/paga'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/pagamentos_controller').default['meusPagamentos']>>>
     }
   }
   'pagamentos.show': {

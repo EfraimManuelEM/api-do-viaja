@@ -10,6 +10,8 @@ export default class extends BaseSchema {
       table.string('destino').notNullable()
       table.string('data').notNullable()
       table.float('preco').notNullable()
+      table.string('tipo').notNullable()
+      table.string('hora').notNullable()
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
